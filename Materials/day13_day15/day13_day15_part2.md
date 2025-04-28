@@ -1,4 +1,4 @@
-#  Part1
+#  Part2
 ---
 
 # 6. Work with Bitwise Operators in C++
