@@ -1,5 +1,4 @@
-#  **Part 3** continuing in the **  
-
+#  **Part 3**  
 ---
 
 # 8. Operator Precedence and Associativity
