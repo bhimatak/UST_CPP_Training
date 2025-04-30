@@ -11,7 +11,6 @@ To use `cstring`, you need to include:
 #include <cstring>
 using namespace std;
 ```
-
 ---
 
 ## **2. Declaring and Initializing C-style Strings**
