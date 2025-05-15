@@ -1,3 +1,4 @@
+  
 ---
 
 ## 🧠 What is Structure Padding?
