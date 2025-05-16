@@ -134,7 +134,9 @@ int main() {
 | Contiguous Block   | Medium                        | High        | Good cache locality  |
 | Flat 1D            | Low                           | Very High   | Best                 |
 
-
+---
+---
+---
 
 **dynamic memory allocation for 2D arrays using `malloc()` in C**, covering all three methods:
 
@@ -262,4 +264,5 @@ int main() {
 | Contiguous block with row pointers | One block for data, `malloc` for row pointers | `arr[i][j]`         | Free `arr[0]`, then `arr`         |
 | Flat 1D array                      | Single block                                  | `arr[i * cols + j]` | Free `arr`                        |
 
-
+---
+---
