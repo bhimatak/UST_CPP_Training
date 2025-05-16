@@ -135,3 +135,131 @@ int main() {
 | Flat 1D            | Low                           | Very High   | Best                 |
 
 
+
+**dynamic memory allocation for 2D arrays using `malloc()` in C**, covering all three methods:
+
+---
+
+## ✅ **Method 1: Pointer to Pointer (`int**`) – Row-wise Allocation**
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int rows = 3, cols = 4;
+
+    // Step 1: Allocate array of int* (row pointers)
+    int** arr = (int**)malloc(rows * sizeof(int*));
+
+    // Step 2: Allocate each row
+    for (int i = 0; i < rows; ++i) {
+        arr[i] = (int*)malloc(cols * sizeof(int));
+    }
+
+    // Initialize
+    for (int i = 0; i < rows; ++i)
+        for (int j = 0; j < cols; ++j)
+            arr[i][j] = i * cols + j;
+
+    // Print
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j)
+            printf("%d ", arr[i][j]);
+        printf("\n");
+    }
+
+    // Free memory
+    for (int i = 0; i < rows; ++i)
+        free(arr[i]);
+    free(arr);
+
+    return 0;
+}
+```
+
+---
+
+## ✅ **Method 2: Single Block Allocation + Array of Row Pointers**
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int rows = 3, cols = 4;
+
+    // Allocate memory for row pointers
+    int** arr = (int**)malloc(rows * sizeof(int*));
+
+    // Allocate one contiguous block for all elements
+    arr[0] = (int*)malloc(rows * cols * sizeof(int));
+
+    // Point each row to the correct position
+    for (int i = 1; i < rows; ++i)
+        arr[i] = arr[0] + i * cols;
+
+    // Initialize
+    for (int i = 0; i < rows; ++i)
+        for (int j = 0; j < cols; ++j)
+            arr[i][j] = i * cols + j;
+
+    // Print
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j)
+            printf("%d ", arr[i][j]);
+        printf("\n");
+    }
+
+    // Free memory
+    free(arr[0]);  // single data block
+    free(arr);     // row pointers
+
+    return 0;
+}
+```
+
+---
+
+## ✅ **Method 3: Flat 1D Array with Manual Indexing**
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int rows = 3, cols = 4;
+
+    // Allocate 1D array
+    int* arr = (int*)malloc(rows * cols * sizeof(int));
+
+    // Initialize
+    for (int i = 0; i < rows; ++i)
+        for (int j = 0; j < cols; ++j)
+            arr[i * cols + j] = i * cols + j;
+
+    // Print
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j)
+            printf("%d ", arr[i * cols + j]);
+        printf("\n");
+    }
+
+    // Free memory
+    free(arr);
+
+    return 0;
+}
+```
+
+---
+
+### ✅ Summary (C using `malloc()`):
+
+| Method                             | Allocation                                    | Access Style        | Freeing Required                  |
+| ---------------------------------- | --------------------------------------------- | ------------------- | --------------------------------- |
+| Pointer-to-pointer                 | `malloc` for rows, then each row              | `arr[i][j]`         | Free each row, then pointer array |
+| Contiguous block with row pointers | One block for data, `malloc` for row pointers | `arr[i][j]`         | Free `arr[0]`, then `arr`         |
+| Flat 1D array                      | Single block                                  | `arr[i * cols + j]` | Free `arr`                        |
+
+
