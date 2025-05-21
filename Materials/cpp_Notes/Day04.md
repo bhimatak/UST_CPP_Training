@@ -1,4 +1,3 @@
-Great! Let’s keep the momentum going 🔥 — here’s your **Day 4** module focused on **Functions in C++14/17**, with a smooth progression from foundational concepts to modern best practices.
 
 ---
 
@@ -189,4 +188,3 @@ Build a **Mini-Grade Processing System**:
 
 ---
 
-Let me know when you're ready for **Day 5** — we’ll go into **Function Overloading & Recursion**, bringing in modern C++ stylistics as we scale up.
