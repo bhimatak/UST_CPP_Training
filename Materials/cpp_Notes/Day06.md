@@ -183,5 +183,3 @@ Build a **Library Book Management System** with:
 - [Modern C++ OOP Best Practices](https://en.cppreference.com/)
 
 ---
-
-Let me know when you're ready for **Day 7: Constructors & Destructors – Deep Dive + C++14/17 Enhancements**! It's where lifecycles begin 🔁
