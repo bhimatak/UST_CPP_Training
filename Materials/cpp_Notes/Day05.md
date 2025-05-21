@@ -1,4 +1,4 @@
-Awesome! Let’s keep the energy up 🔥 and dive into **Day 5**, where we tackle two powerful tools: **Function Overloading** and **Recursion**, both modernized with C++14/17 best practices.
+
 
 ---
 
@@ -189,5 +189,3 @@ Build a **Math Helper Utility**:
 - [Tail Recursion & Optimization](https://en.wikipedia.org/wiki/Tail_call)
 
 ---
-
-Shall we move on to **Day 6: Encapsulation & Abstraction with Classes in C++**? This is where we start diving deep into OOP. Let’s roll!
