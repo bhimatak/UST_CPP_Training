@@ -1,4 +1,4 @@
-Perfect! From this point onward, I’ll align the content with **C++14/17** standards — incorporating features like `auto`, `constexpr`, structured bindings, and more where relevant. Here's your **Day 3** module:
+
 
 ---
 
@@ -160,4 +160,3 @@ Use:
 
 ---
 
-Ready for **Day 4**? We'll get into **Functions in C++** – from basics to default arguments and inline functions.
