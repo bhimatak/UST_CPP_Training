@@ -1,3 +1,4 @@
+<h1 align="center">Virtual Functions</h1>
 ---
 
 ## 🔹 Syntax of a Virtual Function
