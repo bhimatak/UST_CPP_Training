@@ -1,12 +1,12 @@
 <h1 align="center"> CPP Templates</h1>
-```
+<p>
 * What templates are and why they are used
 * Syntax of function and class templates
 * In-depth theory and explanations
 * Practical code examples
 * Real-time use cases
 * Benefits and limitations
-```
+</p>
 ---
 
 # 🧠 C++ Templates: A Comprehensive Tutorial
