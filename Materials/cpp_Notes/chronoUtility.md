@@ -247,3 +247,176 @@ int main() {
 * Use `chrono` with **modern C++ features** like `auto`, `RAII`, and `constexpr`.
 
 ---
+
+
+
+---
+
+## 🧱 9. Logging Levels
+
+| Level   | Description                        |
+| ------- | ---------------------------------- |
+| DEBUG   | For developers, verbose output.    |
+| INFO    | General runtime messages.          |
+| WARNING | Something is off but not critical. |
+| ERROR   | Something went wrong.              |
+
+We will create a **logging system** that writes different levels of messages to a **log file**.
+
+---
+
+## ✏️ 10. Complete Code Example: File Handling with Logging Levels
+
+```cpp
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <ctime>
+#include <iomanip>
+
+// Logging Levels
+enum LogLevel {
+    DEBUG,
+    INFO,
+    WARNING,
+    ERROR
+};
+
+// Convert log level to string
+std::string levelToString(LogLevel level) {
+    switch (level) {
+        case DEBUG: return "DEBUG";
+        case INFO: return "INFO ";
+        case WARNING: return "WARN ";
+        case ERROR: return "ERROR";
+        default: return "UNKNOWN";
+    }
+}
+
+// Get current time as string
+std::string getCurrentTime() {
+    std::time_t now = std::time(nullptr);
+    std::tm *lt = std::localtime(&now);
+    char buffer[32];
+    std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", lt);
+    return std::string(buffer);
+}
+
+// Logger Class
+class Logger {
+    std::ofstream logFile;
+
+public:
+    Logger(const std::string& filename) {
+        logFile.open(filename, std::ios::app);  // Append mode
+        if (!logFile.is_open()) {
+            std::cerr << "Failed to open log file\n";
+        }
+    }
+
+    ~Logger() {
+        if (logFile.is_open())
+            logFile.close();
+    }
+
+    void log(LogLevel level, const std::string& message) {
+        if (logFile.is_open()) {
+            logFile << "[" << getCurrentTime() << "] "
+                    << "[" << levelToString(level) << "] "
+                    << message << std::endl;
+        }
+    }
+};
+
+// Main Application
+int main() {
+    Logger logger("app.log");
+
+    logger.log(INFO, "Application started");
+    logger.log(DEBUG, "Initializing variables");
+
+    int x = 10, y = 0;
+    logger.log(DEBUG, "x = 10, y = 0");
+
+    if (y == 0) {
+        logger.log(WARNING, "Attempt to divide by zero");
+        logger.log(ERROR, "Division failed due to zero denominator");
+    } else {
+        int z = x / y;
+        logger.log(INFO, "Division successful: " + std::to_string(z));
+    }
+
+    logger.log(INFO, "Application ended");
+    return 0;
+}
+```
+
+---
+
+### 📂 Output in `app.log`:
+
+```
+[2025-05-31 14:25:01] [INFO ] Application started
+[2025-05-31 14:25:01] [DEBUG] Initializing variables
+[2025-05-31 14:25:01] [DEBUG] x = 10, y = 0
+[2025-05-31 14:25:01] [WARN ] Attempt to divide by zero
+[2025-05-31 14:25:01] [ERROR] Division failed due to zero denominator
+[2025-05-31 14:25:01] [INFO ] Application ended
+```
+
+---
+
+## 📚 11. Explanation of the Code
+
+| Component        | Role                                         |
+| ---------------- | -------------------------------------------- |
+| `ofstream`       | Writes to a file (`app.log`).                |
+| `enum LogLevel`  | Defines four logging levels.                 |
+| `levelToString`  | Converts enum to string label.               |
+| `getCurrentTime` | Fetches timestamp for each log.              |
+| `Logger` class   | Manages file creation, logging, and closure. |
+
+---
+
+## 🧪 12. Real-time Use Cases
+
+| Scenario              | How File Handling Helps         |
+| --------------------- | ------------------------------- |
+| Debugging software    | Use `DEBUG` to trace flow.      |
+| Monitoring servers    | Use `INFO` for routine status.  |
+| Handling exceptions   | Use `ERROR` for crash logs.     |
+| Maintenance alerts    | Use `WARNING` to detect issues. |
+| Auditing & compliance | Permanent log files for review. |
+
+---
+
+## 🧠 13. Best Practices
+
+* Always **close files** using destructor or `RAII`.
+* Use **timestamps** to track events.
+* Separate **logging logic** into reusable classes.
+* Use `std::flush` if real-time logs are critical.
+* Don’t mix `cout` and file logging in production apps.
+
+---
+
+## 🎯 Summary Table
+
+| Task                  | Code                                             |
+| --------------------- | ------------------------------------------------ |
+| Include file handling | `#include <fstream>`                             |
+| Open file for logging | `logFile.open("file.txt", std::ios::app);`       |
+| Write to file         | `logFile << "data";`                             |
+| Add timestamp         | Use `std::time` and `strftime`                   |
+| Enum-based log levels | `enum LogLevel { DEBUG, INFO, WARNING, ERROR };` |
+
+---
+
+## 📦 Optional Enhancements
+
+* Add **log rotation** (e.g., one log per day).
+* Include **thread safety** using `std::mutex`.
+* Make logger a **singleton class**.
+* Write logs in **JSON or CSV** format.
+
+---
