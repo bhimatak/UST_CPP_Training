@@ -1,4 +1,4 @@
-<h1 align="center">Chrono Utility/Lib</h1>  
+***Chrono Utility/Lib***  
 ---
 1. **What is `chrono`?**
 2. **Why use `chrono`?**
