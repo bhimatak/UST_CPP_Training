@@ -89,20 +89,20 @@ Key uses of constexpr:
 <ul>
     
 <li>
-• Compile-time Constants: constexpr can be used to declare variables that are known at compile time. 
+Compile-time Constants: constexpr can be used to declare variables that are known at compile time. 
 </li>
 <li>
-• Compile-time Functions: constexpr functions can be evaluated at compile time if their arguments are also compile-time constants. 
+Compile-time Functions: constexpr functions can be evaluated at compile time if their arguments are also compile-time constants. 
 </li>
 <li>
-• Template Arguments: constexpr values can be used as template arguments, enabling more flexible and efficient generic programming.
+Template Arguments: constexpr values can be used as template arguments, enabling more flexible and efficient generic programming.
 </li>
 <li>
-• Array Sizes: constexpr values can be used to define the size of arrays, ensuring that the size is known at compile time.
+Array Sizes: constexpr values can be used to define the size of arrays, ensuring that the size is known at compile time.
 
 </li>
 <li>
-• Performance Optimization: By performing computations at compile time, constexpr can reduce the runtime overhead of programs.
+Performance Optimization: By performing computations at compile time, constexpr can reduce the runtime overhead of programs.
 
 </li>
 </ul>
@@ -113,9 +113,12 @@ Benefits of using constexpr:
 </li><li>Increased Code Safety: constexpr enforces compile-time checks, preventing errors that might occur during runtime. </li><li>Better Code Readability: constexpr can make code more explicit and easier to understand, by clearly indicating which values and computations are known at compile time. 
 </ul>
 Limitations of constexpr: 
-
-• constexpr functions must adhere to certain restrictions, such as having a single return statement and only using other constexpr functions. 
-• Not all computations can be performed at compile time, limiting the use of constexpr in some cases. 
+<ul>
+<li>
+</li><li>constexpr functions must adhere to certain restrictions, such as having a single return statement and only using other constexpr functions. 
+</li><li>Not all computations can be performed at compile time, limiting the use of constexpr in some cases. 
+</li></ul>
+    
 </p>
 
 ---
