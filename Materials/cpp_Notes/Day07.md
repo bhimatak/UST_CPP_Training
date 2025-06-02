@@ -83,8 +83,8 @@ public:
 
 > Enables constant expression objects at compile-time.
 ---
-
-The constexpr keyword in C++ is used to indicate that a variable or function can be evaluated at compile time. This enables the compiler to perform computations during the compilation process rather than at runtime, which can lead to improved performance and efficiency. [1]  
+<p>
+The constexpr keyword in C++ is used to indicate that a variable or function can be evaluated at compile time. This enables the compiler to perform computations during the compilation process rather than at runtime, which can lead to improved performance and efficiency.  
 Key uses of constexpr: 
 
 • Compile-time Constants: constexpr can be used to declare variables that are known at compile time. 
@@ -103,7 +103,7 @@ Limitations of constexpr:
 
 • constexpr functions must adhere to certain restrictions, such as having a single return statement and only using other constexpr functions. 
 • Not all computations can be performed at compile time, limiting the use of constexpr in some cases. 
-
+</p>
 
 ---
 
