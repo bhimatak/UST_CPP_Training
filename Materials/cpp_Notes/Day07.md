@@ -106,12 +106,12 @@ Key uses of constexpr:
 
 </li>
 </ul>
+
 Benefits of using constexpr: 
-
-• Improved Performance: Computations performed at compile time avoid runtime overhead. 
-• Increased Code Safety: constexpr enforces compile-time checks, preventing errors that might occur during runtime. 
-• Better Code Readability: constexpr can make code more explicit and easier to understand, by clearly indicating which values and computations are known at compile time. 
-
+<ul>
+<li>Improved Performance: Computations performed at compile time avoid runtime overhead. 
+</li><li>Increased Code Safety: constexpr enforces compile-time checks, preventing errors that might occur during runtime. </li><li>Better Code Readability: constexpr can make code more explicit and easier to understand, by clearly indicating which values and computations are known at compile time. 
+</ul>
 Limitations of constexpr: 
 
 • constexpr functions must adhere to certain restrictions, such as having a single return statement and only using other constexpr functions. 
