@@ -1,4 +1,4 @@
-Sure! Here are **5 practice problems** based on **stack**, **queue**, and **priority\_queue** to help you master container adapters in C++. These problems range from intermediate to advanced level, focusing on real-world inspired tasks.
+
 
 ---
 
