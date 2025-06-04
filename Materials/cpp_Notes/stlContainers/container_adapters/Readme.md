@@ -1,2 +1,2 @@
 ## **Container Adapters**  
-### **Stack, Queue, priority_queue
+### Stack, Queue, priority_queue
