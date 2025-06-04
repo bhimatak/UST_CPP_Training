@@ -174,3 +174,173 @@ Min-heap priority queue top: 10
 
 ---
 
+
+---
+
+# Container Adapters with Unique Use Cases
+
+---
+
+## 1. **Stack (LIFO) — Use Case: Undo Feature in a Text Editor**
+
+### Scenario:
+
+When you type or edit text, every action is pushed onto a stack. When you press "Undo," the last action is popped from the stack and reverted.
+
+### Why Stack?
+
+* The **Last-In-First-Out (LIFO)** property means the most recent action is undone first.
+* Only the most recent operation needs to be reverted at any time.
+
+### How it works:
+
+* Each edit (like inserting or deleting text) is stored as an "action" on the stack.
+* Undo pops the last action and reverses it.
+
+### Simple example code snippet:
+
+```cpp
+#include <iostream>
+#include <stack>
+#include <string>
+
+struct Action {
+    std::string description;
+    // Additional info like cursor position, text inserted/deleted could be added
+};
+
+int main() {
+    std::stack<Action> undoStack;
+
+    // User types "Hello"
+    undoStack.push({"Typed 'Hello'"});
+    // User deletes 'o'
+    undoStack.push({"Deleted 'o'"});
+    // User types '!'
+    undoStack.push({"Typed '!'"});
+
+    // Undo last action
+    if (!undoStack.empty()) {
+        std::cout << "Undo action: " << undoStack.top().description << "\n";
+        undoStack.pop();
+    }
+
+    // Undo another action
+    if (!undoStack.empty()) {
+        std::cout << "Undo action: " << undoStack.top().description << "\n";
+        undoStack.pop();
+    }
+
+    return 0;
+}
+```
+
+---
+
+## 2. **Queue (FIFO) — Use Case: Customer Service Call Center**
+
+### Scenario:
+
+Customers call a helpline and wait in a queue. The first caller to enter the queue is the first to be served.
+
+### Why Queue?
+
+* The **First-In-First-Out (FIFO)** behavior guarantees fairness — first come, first served.
+* Maintains order of customer service requests.
+
+### How it works:
+
+* Each new call is added to the back of the queue.
+* When an agent is free, the call at the front of the queue is handled.
+
+### Simple example code snippet:
+
+```cpp
+#include <iostream>
+#include <queue>
+#include <string>
+
+int main() {
+    std::queue<std::string> callQueue;
+
+    // Customers call in
+    callQueue.push("Caller 1: Alice");
+    callQueue.push("Caller 2: Bob");
+    callQueue.push("Caller 3: Charlie");
+
+    // Serve callers
+    while (!callQueue.empty()) {
+        std::cout << "Serving: " << callQueue.front() << "\n";
+        callQueue.pop();
+    }
+
+    return 0;
+}
+```
+
+---
+
+## 3. **Priority Queue — Use Case: Emergency Room Patient Triage**
+
+### Scenario:
+
+Patients arrive in an emergency room, and each has a severity level (priority). The patient with the highest severity is treated first, regardless of arrival time.
+
+### Why Priority Queue?
+
+* Prioritizes patients based on severity, not arrival order.
+* Automatically sorts patients by their priority (highest severity first).
+
+### How it works:
+
+* Each patient is pushed into the priority queue with their severity as the priority key.
+* The patient with the highest severity is always at the top and treated next.
+
+### Simple example code snippet:
+
+```cpp
+#include <iostream>
+#include <queue>
+#include <string>
+#include <vector>
+
+struct Patient {
+    std::string name;
+    int severity; // Higher value = more severe
+
+    // Operator overload to compare patients by severity (for priority queue)
+    bool operator<(const Patient& other) const {
+        return severity < other.severity; // max heap by default
+    }
+};
+
+int main() {
+    std::priority_queue<Patient> triageQueue;
+
+    triageQueue.push({"John", 5});
+    triageQueue.push({"Alice", 8});
+    triageQueue.push({"Bob", 3});
+
+    while (!triageQueue.empty()) {
+        Patient p = triageQueue.top();
+        std::cout << "Treating patient: " << p.name << " with severity " << p.severity << "\n";
+        triageQueue.pop();
+    }
+
+    return 0;
+}
+```
+
+---
+
+# Summary of Use Cases
+
+| Adapter            | Real-World Use Case          | Key Reason to Use                           |
+| ------------------ | ---------------------------- | ------------------------------------------- |
+| **Stack**          | Undo feature in text editors | Reverse the most recent action first (LIFO) |
+| **Queue**          | Call center customer queue   | Serve customers in order of arrival (FIFO)  |
+| **Priority Queue** | Emergency room triage        | Serve patients by urgency, not order        |
+
+---
+
+
