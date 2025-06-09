@@ -113,7 +113,7 @@ These change values in the range.
 
 ---
 
-### 6. ⚙️ **Min/Max Operations**
+### 6.  **Min/Max Operations**
 
 | Algorithm        | Syntax                       | Description         |
 | ---------------- | ---------------------------- | ------------------- |
