@@ -16,6 +16,9 @@
 12. Thread-safe Containers
 13. Real-time Use Case Example
 14. Summary and Best Practices
+15. Advanced Concurrency Features
+16. Full Thread Pool Implementation
+17. Concurrency Patterns
 
 ---
 
@@ -264,4 +267,176 @@ public:
 * Test multithreaded code thoroughly.
 
 ---
+---
 
+## 14. Advanced Concurrency Features
+
+### 1. std::async and std::future
+
+Simplifies thread management by creating asynchronous tasks.
+
+```cpp
+#include <future>
+#include <iostream>
+
+int compute(int x) {
+    return x * x;
+}
+
+int main() {
+    std::future<int> result = std::async(std::launch::async, compute, 10);
+    std::cout << "Result: " << result.get() << std::endl;
+}
+```
+
+### 2. std::packaged\_task
+
+Wraps a callable and allows retrieving result via future.
+
+```cpp
+#include <iostream>
+#include <future>
+
+int compute(int a) { return a * 3; }
+
+int main() {
+    std::packaged_task<int(int)> task(compute);
+    std::future<int> result = task.get_future();
+    std::thread t(std::move(task), 7);
+    t.join();
+    std::cout << "Result: " << result.get();
+}
+```
+
+### 3. Thread Pools (C++ doesn't have built-in thread pool)
+
+Use external libraries or custom implementation.
+
+---
+
+## 16. Full Thread Pool Implementation
+
+```cpp
+class ThreadPool {
+public:
+    ThreadPool(size_t);
+    template<class F, class... Args>
+    auto enqueue(F&& f, Args&&... args)
+        -> std::future<typename std::result_of<F(Args...)>::type>;
+    ~ThreadPool();
+private:
+    std::vector<std::thread> workers;
+    std::queue<std::function<void()>> tasks;
+    std::mutex queue_mutex;
+    std::condition_variable condition;
+    bool stop;
+};
+
+inline ThreadPool::ThreadPool(size_t threads) : stop(false) {
+    for (size_t i = 0; i < threads; ++i)
+        workers.emplace_back([this] {
+            for (;;) {
+                std::function<void()> task;
+                {
+                    std::unique_lock<std::mutex> lock(this->queue_mutex);
+                    this->condition.wait(lock, [this] {
+                        return this->stop || !this->tasks.empty();
+                    });
+                    if (this->stop && this->tasks.empty())
+                        return;
+                    task = std::move(this->tasks.front());
+                    this->tasks.pop();
+                }
+                task();
+            }
+        });
+}
+
+template<class F, class... Args>
+auto ThreadPool::enqueue(F&& f, Args&&... args)
+    -> std::future<typename std::result_of<F(Args...)>::type> {
+    using return_type = typename std::result_of<F(Args...)>::type;
+
+    auto task = std::make_shared<std::packaged_task<return_type()>>(
+        std::bind(std::forward<F>(f), std::forward<Args>(args)...)
+    );
+
+    std::future<return_type> res = task->get_future();
+    {
+        std::unique_lock<std::mutex> lock(queue_mutex);
+        if (stop)
+            throw std::runtime_error("enqueue on stopped ThreadPool");
+        tasks.emplace([task]() { (*task)(); });
+    }
+    condition.notify_one();
+    return res;
+}
+
+inline ThreadPool::~ThreadPool() {
+    {
+        std::unique_lock<std::mutex> lock(queue_mutex);
+        stop = true;
+    }
+    condition.notify_all();
+    for (std::thread &worker : workers)
+        worker.join();
+}
+```
+
+---
+
+## 17. Concurrency Patterns
+
+### 1. Producer-Consumer
+
+```cpp
+std::queue<int> buffer;
+std::mutex mtx;
+std::condition_variable cv;
+bool done = false;
+
+void producer() {
+    for (int i = 0; i < 10; ++i) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        {
+            std::lock_guard<std::mutex> lock(mtx);
+            buffer.push(i);
+        }
+        cv.notify_one();
+    }
+    {
+        std::lock_guard<std::mutex> lock(mtx);
+        done = true;
+    }
+    cv.notify_all();
+}
+
+void consumer() {
+    while (true) {
+        std::unique_lock<std::mutex> lock(mtx);
+        cv.wait(lock, [] { return !buffer.empty() || done; });
+        while (!buffer.empty()) {
+            std::cout << "Consumed: " << buffer.front() << "\n";
+            buffer.pop();
+        }
+        if (done) break;
+    }
+}
+```
+
+### 2. Fork-Join Pattern
+
+```cpp
+int parallel_sum(std::vector<int>& data, int start, int end) {
+    if (end - start <= 1000) {
+        return std::accumulate(data.begin() + start, data.begin() + end, 0);
+    }
+    int mid = start + (end - start) / 2;
+    auto handle = std::async(std::launch::async, parallel_sum, std::ref(data), mid, end);
+    int left = parallel_sum(data, start, mid);
+    int right = handle.get();
+    return left + right;
+}
+```
+
+This pattern divides work recursively and joins results efficiently.
