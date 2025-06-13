@@ -316,72 +316,108 @@ Use external libraries or custom implementation.
 
 ## 16. Full Thread Pool Implementation
 
+
+
 ```cpp
-class ThreadPool {
-public:
-    ThreadPool(size_t);
-    template<class F, class... Args>
-    auto enqueue(F&& f, Args&&... args)
-        -> std::future<typename std::result_of<F(Args...)>::type>;
-    ~ThreadPool();
-private:
-    std::vector<std::thread> workers;
-    std::queue<std::function<void()>> tasks;
-    std::mutex queue_mutex;
-    std::condition_variable condition;
-    bool stop;
+#include <iostream>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <vector>
+#include <queue>
+#include <chrono>
+
+using namespace std;
+
+// Task structure: plain function pointer + void* argument
+struct Task {
+    void (*func)(void*);
+    void* arg;
 };
 
-inline ThreadPool::ThreadPool(size_t threads) : stop(false) {
-    for (size_t i = 0; i < threads; ++i)
-        workers.emplace_back([this] {
-            for (;;) {
-                std::function<void()> task;
-                {
-                    std::unique_lock<std::mutex> lock(this->queue_mutex);
-                    this->condition.wait(lock, [this] {
-                        return this->stop || !this->tasks.empty();
-                    });
-                    if (this->stop && this->tasks.empty())
-                        return;
-                    task = std::move(this->tasks.front());
-                    this->tasks.pop();
+class ThreadPool {
+public:
+    // Constructor with fixed default value (no hardware_concurrency)
+    ThreadPool(size_t num_threads = 4) {
+        stop_ = false;
+        for (size_t i = 0; i < num_threads; ++i) {
+            threads_.emplace_back(&ThreadPool::worker_thread, this);
+        }
+    }
+
+    // Destructor
+    ~ThreadPool() {
+        {
+            unique_lock<mutex> lock(queue_mutex_);
+            stop_ = true;
+        }
+        cv_.notify_all();
+        for (auto& t : threads_) {
+            if (t.joinable())
+                t.join();
+        }
+    }
+
+    // Enqueue a raw task
+    void enqueue(void (*func)(void*), void* arg) {
+        {
+            unique_lock<mutex> lock(queue_mutex_);
+            tasks_.push({func, arg});
+        }
+        cv_.notify_one();
+    }
+
+private:
+    // Worker thread loop
+    void worker_thread() {
+        while (true) {
+            Task task;
+            {
+                unique_lock<mutex> lock(queue_mutex_);
+                while (tasks_.empty() && !stop_) {
+                    cv_.wait(lock);
                 }
-                task();
+                if (stop_ && tasks_.empty()) {
+                    return;
+                }
+                task = tasks_.front();
+                tasks_.pop();
             }
-        });
+            task.func(task.arg);  // Execute the task
+        }
+    }
+
+    vector<thread> threads_;
+    queue<Task> tasks_;
+    mutex queue_mutex_;
+    condition_variable cv_;
+    bool stop_;
+};
+
+// Sample task function
+void print_task(void* arg) {
+    int id = *static_cast<int*>(arg);
+    cout << "Task " << id << " is running on thread "
+         << this_thread::get_id() << endl;
+    this_thread::sleep_for(chrono::milliseconds(100));
 }
 
-template<class F, class... Args>
-auto ThreadPool::enqueue(F&& f, Args&&... args)
-    -> std::future<typename std::result_of<F(Args...)>::type> {
-    using return_type = typename std::result_of<F(Args...)>::type;
+int main() {
+    ThreadPool pool; // Default 4 threads
 
-    auto task = std::make_shared<std::packaged_task<return_type()>>(
-        std::bind(std::forward<F>(f), std::forward<Args>(args)...)
-    );
+    int task_ids[5] = {0, 1, 2, 3, 4}; // Must stay alive during execution
 
-    std::future<return_type> res = task->get_future();
-    {
-        std::unique_lock<std::mutex> lock(queue_mutex);
-        if (stop)
-            throw std::runtime_error("enqueue on stopped ThreadPool");
-        tasks.emplace([task]() { (*task)(); });
+    for (int i = 0; i < 5; ++i) {
+        pool.enqueue(print_task, &task_ids[i]);
     }
-    condition.notify_one();
-    return res;
-}
 
-inline ThreadPool::~ThreadPool() {
-    {
-        std::unique_lock<std::mutex> lock(queue_mutex);
-        stop = true;
-    }
-    condition.notify_all();
-    for (std::thread &worker : workers)
-        worker.join();
+    // Wait for all tasks to finish
+    this_thread::sleep_for(chrono::seconds(1));
+    return 0;
 }
 ```
+
+
 
 ---
 
