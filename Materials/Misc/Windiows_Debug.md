@@ -156,3 +156,113 @@
 
 ---
 
+
+
+---
+
+### **Core Windows Terms**
+1. **BSOD**: Blue Screen of Death  
+2. **WER**: Windows Error Reporting  
+3. **OCA**: Online Crash Analysis  
+4. **OS**: Operating System  
+5. **RAM**: Random Access Memory  
+6. **CPU**: Central Processing Unit  
+7. **NTFS**: New Technology File System  
+8. **HAL**: Hardware Abstraction Layer  
+9. **IRQL**: Interrupt Request Level  
+10. **IRP**: I/O Request Packet  
+
+---
+
+### **Crash Dump & Analysis**
+11. **WinDbg**: Windows Debugger  
+12. **Kernel Dump**: Kernel-mode memory dump (context: *Crash Dump Files*)  
+13. **Minidump**: Small memory dump (64–256 KB)  
+14. **DMP**: Dump file extension (e.g., `MEMORY.DMP`)  
+15. **!analyze**: WinDbg command for automated crash analysis  
+
+---
+
+### **Memory & Hardware**
+16. **DEP**: Data Execution Prevention  
+17. **NX**: No-Execute (memory protection)  
+18. **SMART**: Self-Monitoring, Analysis, and Reporting Technology (disk health)  
+19. **IRQ**: Interrupt Request  
+20. **I/O**: Input/Output  
+
+---
+
+### **System Tools & Features**
+21. **DSE**: Driver Signature Enforcement  
+22. **KMCS**: Kernel-Mode Code Signing (related to DSE)  
+23. **HKLU**: HKEY_LOCAL_USER (Registry hive)  
+24. **HKLM**: HKEY_LOCAL_MACHINE (Registry hive)  
+25. **ProcMon**: Process Monitor (Sysinternals tool)  
+26. **Sysinternals**: Suite of Windows system utilities  
+27. **chkdsk**: Check Disk (disk repair utility)  
+28. **memtest86+**: Memory diagnostic tool  
+
+---
+
+### **Debugging & Crash Mechanisms**
+29. **Driver Verifier**: Tool to stress-test drivers (`verifier.exe`)  
+30. **PatchGuard**: Kernel Patch Protection (formal name: *Kernel Patch Protection*)  
+31. **DPC**: Deferred Procedure Call  
+32. **APC**: Asynchronous Procedure Call  
+33. **ETHREAD**: Executive Thread (kernel structure)  
+34. **EPROCESS**: Executive Process (kernel structure)  
+35. **KPRCB**: Kernel Processor Control Block  
+
+---
+
+### **Error Codes & Structures**
+36. **STACK_TEXT**: Call stack trace in crash dumps  
+37. **FAILING_MODULE**: Driver/component causing crash (WinDbg output)  
+38. **STOP 0x7B**: `INACCESSIBLE_BOOT_DEVICE`  
+39. **STOP 0xC1**: `SPECIAL_POOL_DETECTED_MEMORY_CORRUPTION`  
+40. **STOP 0xC5**: `DRIVER_CORRUPTED_EXPOOL`  
+41. **STOP 0xFC**: `ATTEMPTED_EXECUTE_OF_NOEXECUTE_MEMORY`  
+
+---
+
+### **Infrastructure & Reporting**
+42. **MS KB**: Microsoft Knowledge Base  
+43. **MSDL**: Microsoft Symbol Server (`https://msdl.microsoft.com/download/symbols`)  
+44. **OpenOCA**: Open Online Crash Analysis portal  
+45. **perfmon**: Performance Monitor (`perfmon /rel` for Reliability Monitor)  
+
+---
+
+### **Training-Specific Terms**
+46. **VM**: Virtual Machine  
+47. **IT**: Information Technology  
+48. **Q&A**: Question and Answer  
+49. **Lab**: Hands-on practical exercise  
+50. **Reg**: Registry (e.g., `HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\CrashControl`)  
+
+---
+
+### **Key Commands & Syntax**
+51. **.symfix**: WinDbg command to set default symbol path  
+52. **.reload**: WinDbg command to reload symbols  
+53. **lm**: "List Modules" (WinDbg)  
+54. **!thread**: Display thread information (WinDbg)  
+55. **!irp**: Inspect I/O Request Packets (WinDbg)  
+56. **dps**: Dump memory with symbols (WinDbg)  
+
+---
+
+### **Miscellaneous**
+57. **Corp**: Corporate (WER configuration mode)  
+58. **Dev**: Development  
+59. **Sys**: System  
+60. **Ctrl+ScrLk**: Control + Scroll Lock (manual crash sequence)  
+
+---
+
+### **Delivery Tips Glossary**
+61. **L1/L2/L3**: Level 1/2/3 (lab difficulty tiers)  
+62. **BSOD Screen Saver**: Tool to simulate Blue Screens for demos  
+63. **NotMyFault**: Sysinternals tool to induce crashes  
+
+---
