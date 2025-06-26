@@ -27,9 +27,9 @@ Here's a more detailed look at why hashing is beneficial in data structures:
 
 6. Performance Optimization: 
 
-• Hashing can significantly improve the performance of various operations like searching, sorting, and comparing data. [15]  
-• By using hash tables, you can achieve close to constant-time complexity for these operations, making your programs faster and more efficient. [6, 15]  
+• Hashing can significantly improve the performance of various operations like searching, sorting, and comparing data.   
+• By using hash tables, you can achieve close to constant-time complexity for these operations, making your programs faster and more efficient.
 
-In essence, hashing provides a powerful way to organize and access data efficiently, making it a crucial tool in various data structures and applications. [1, 3, 5]  
+In essence, hashing provides a powerful way to organize and access data efficiently, making it a crucial tool in various data structures and applications.
 
 
