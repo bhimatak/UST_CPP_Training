@@ -246,3 +246,145 @@ Visual Studio 2022 uses these automatically when present.
 * 🎥 YouTube: Search *“CMake Visual Studio tutorial”*
 
 ---
+
+
+
+---
+
+## Step-by-Step: Using CMake with Visual Studio 2022
+
+### Prerequisites
+
+Make sure the following are installed:
+
+1. Visual Studio 2022
+2. During installation or via Visual Studio Installer, ensure the following components are selected:
+
+   * "Desktop development with C++"
+   * "CMake tools for Windows"
+
+---
+
+## Step 1: Create a New Folder Structure
+
+1. Create a project folder, for example, `MyCMakeProject`
+2. Inside that, create a folder named `src`
+3. Add your C++ source file inside `src`, e.g., `main.cpp`
+4. Create a file in the root called `CMakeLists.txt`
+
+Folder structure:
+
+```
+MyCMakeProject/
+    CMakeLists.txt
+    src/
+        main.cpp
+```
+
+---
+
+## Step 2: Write Your Source Code
+
+Inside `src/main.cpp`, write a simple program:
+
+```cpp
+#include <iostream>
+
+int main() {
+    std::cout << "Hello from CMake in Visual Studio 2022!" << std::endl;
+    return 0;
+}
+```
+
+---
+
+## Step 3: Create the CMakeLists.txt File
+
+In the root folder `MyCMakeProject`, create and save the following in `CMakeLists.txt`:
+
+```cmake
+cmake_minimum_required(VERSION 3.20)
+
+project(MyCMakeApp VERSION 1.0 LANGUAGES CXX)
+
+add_executable(MyCMakeApp src/main.cpp)
+```
+
+---
+
+## Step 4: Open Project in Visual Studio 2022
+
+1. Launch Visual Studio 2022
+2. Select "File" from the top menu
+3. Choose "Open" and then "Folder"
+4. Navigate to the `MyCMakeProject` folder and select it
+5. Visual Studio will automatically detect the `CMakeLists.txt` file and configure the project
+
+---
+
+## Step 5: Set Target and Build
+
+1. Look at the dropdown in the toolbar to select the configuration:
+
+   * Select `x64-Debug` or `x64-Release` as appropriate
+2. From the top menu, choose "Build"
+3. Click on "Build All" (this compiles your code using the generated build files)
+
+---
+
+## Step 6: Run the Program
+
+1. After building, from the top menu select "Debug"
+2. Choose "Start Without Debugging" (or press `Ctrl + F5`)
+3. The output window should show: `Hello from CMake in Visual Studio 2022!`
+
+---
+
+## Step 7: Explore the Generated Files
+
+Visual Studio generates build files in a temporary folder like:
+
+```
+C:\Users\YourName\AppData\Local\CMakeBuild\
+```
+
+To change or control the output build directory, you can use a `CMakePresets.json` file or manually configure it using CMake GUI (covered later if needed).
+
+---
+
+## Optional: Add More Source Files
+
+You can add more `.cpp` files to the `src` folder and list them in `CMakeLists.txt` like this:
+
+```cmake
+add_executable(MyCMakeApp
+    src/main.cpp
+    src/helper.cpp
+)
+```
+
+---
+
+## Optional: Use Header Files
+
+If you have headers in a separate `include` directory:
+
+1. Create a folder `include` and add `helper.h` inside it
+2. Update `CMakeLists.txt` to include the path:
+
+```cmake
+target_include_directories(MyCMakeApp PRIVATE include)
+```
+
+---
+
+## Summary
+
+To summarize the steps:
+
+1. Create folders and files (`src/main.cpp`, `CMakeLists.txt`)
+2. Open the folder directly in Visual Studio 2022
+3. Visual Studio configures the CMake project automatically
+4. Build and run using Visual Studio menus
+
+---
